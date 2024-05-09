@@ -7,16 +7,16 @@
  * };
  */
 bool Traversal(struct TreeNode* p, struct TreeNode* q ){
-    if(q == NULL && p == NULL) return true;
-    else if(q != NULL && p != NULL){
+    if(q == NULL && p == NULL) return true; // 一開始若都為空，則為true
+    else if(q != NULL && p != NULL){	    //都非空
         if(p->val != q-> val) return false;
         else {
-            bool leftSame = Traversal(p->left,q->left);
-            bool rightSame =Traversal(p->right,q->right);
-            return leftSame&&rightSame;
+            bool leftSame = Traversal(p->left,q->left);  // 用一個變數去代表左子樹是否都相同
+            bool rightSame =Traversal(p->right,q->right);// 同理去代表右子樹是否相同
+            return leftSame&&rightSame;			 
         } 
     }
-    else return false;
+    else return false;//一空另一個不空
 }
 
 bool isSameTree(struct TreeNode* p, struct TreeNode* q) {
