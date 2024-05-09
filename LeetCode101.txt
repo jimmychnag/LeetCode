@@ -1,0 +1,22 @@
+bool Traversal(struct TreeNode* root1 ,struct TreeNode* root2){
+    if(root1 == NULL && root2 == NULL) return true;                       //若分支出去都為NULL則相同
+    else if(root1 != NULL && root2 != NULL){				  //若都有分支則繼續
+        if(root1->val == root2->val){
+            bool leftSymmetric = Traversal(root1->left,root2->right);	  //以變數代表外圍是否都對稱，內圈同理
+            bool rightSymmetric = Traversal(root1->right,root2->left);
+            return leftSymmetric && rightSymmetric;
+        }
+        else return false;						  //若值不相等則必不對稱
+    }
+    else return false;							  //若一個有分支一個沒，則非對稱
+
+}
+
+bool isSymmetric(struct TreeNode* root) {
+    if (root == NULL) return true;
+
+    struct TreeNode *root1 = root->left;
+    struct TreeNode *root2 = root->right;
+    
+    return Traversal(root1,root2);
+}
