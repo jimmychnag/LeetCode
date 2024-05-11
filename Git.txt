@@ -1,0 +1,4 @@
+git status 		看資料夾狀況
+git add . 		加入
+git commit -m "新增註解"
+git push 2 master       推到repositories上

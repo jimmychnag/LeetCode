@@ -1,0 +1,54 @@
+//----------------------Best Code----------------------------//
+
+int removeElement(int* nums, int numsSize, int val) {
+    int count = 0;
+    for(int i = 0 ; i< numsSize ; i++){
+        if(nums[i] != val){
+            nums[count] = nums[i];
+            count ++;
+        }
+    }
+    return count;
+}
+
+
+//-----------------------------------------------------------//
+//-----------------------------------------------------------//
+void swap(int *a,int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int removeElement(int* nums, int numsSize, int val) {
+    for(int i = 0 ; i < numsSize ; i++){
+        for(int j = i+1 ; j < numsSize ; j++){
+            if(nums[j] < nums[i]){
+                swap(&nums[j],&nums[i]);
+            }
+        }
+    }
+
+    int not ;
+    int count = 0;
+    if(numsSize == 1 && nums[0] == val) return NULL;
+    for(int k = 0 ; k < numsSize ; k++){
+        count++;
+        if(val == nums[k]){
+            count--;
+            not = k;
+            while(1){
+                if(val != nums[not]) break;
+                else if(not == numsSize-1) break;
+                not++;
+            }
+            if(nums[k] != nums[not]){
+                nums[k] = nums[not];
+                nums[not] = val;
+                count++;
+            }
+        }
+    }
+    printf("%d" , count);
+    return count;
+}
