@@ -1,0 +1,66 @@
+void BFS(struct TreeNode* root,int *arr) {
+    struct TreeNode* queue[10000];
+    int front = 0;
+    int rear = 0;
+    int i = 0;
+    queue[(rear)++] = root;
+    arr[i++] = root->val;
+    while (front < rear) {
+        struct TreeNode* current = queue[(front)++];
+        if (current->left) {
+            queue[rear++] = current->left;
+            arr[i++] = current->left->val;
+        }
+        if(current->left == NULL){
+            arr[i++] = 0;
+        }
+        if (current->right) {
+            queue[rear++] = current->right;
+            arr[i++] = current->right->val;
+        }
+        if (current->right == NULL) {
+            arr[i++] = 0;
+        }
+    }
+}
+long long kthLargestLevelSum(struct TreeNode* root, int k) {
+    int arr[100000] = {0};
+    int levelSum[100000] = {0};
+    int levelCount = 0;
+
+    // 執行 BFS，將節點值存入 arr 中
+    BFS(root, &arr[0]);
+
+    // 計算每個層級的總和
+    int i = 0;
+    int j = 0;
+    long long sum = 0; // 使用 long long 來儲存總和，以防止溢出
+    while(i<10000 ){
+        j ++;
+        while(i < pow(2,j)-1){
+            sum += arr[i++];
+        }
+        if(sum == 0) break;
+        levelSum[levelCount++] = sum;
+        sum = 0;
+    }
+
+    // 找到第 k 大的層級總和
+    // 我們將採取簡單的排序方法，以後可能需要更有效率的方法
+    for (int i = 0; i < levelCount; i++) {
+        int maxIndex = i;
+        for (int j = i + 1; j < levelCount; j++) {
+            if (levelSum[j] > levelSum[maxIndex]) {
+                maxIndex = j;
+            }
+        }
+        // 將元素交換以按降序排序
+        long long temp = levelSum[i];
+        levelSum[i] = levelSum[maxIndex];
+        levelSum[maxIndex] = temp;
+    }
+
+    // 返回第 k 大的層級總和
+    printf("%d\n",levelSum[4]);
+    return levelSum[k-1];
+}
