@@ -1,0 +1,45 @@
+//https://www.youtube.com/watch?v=oa6uR2yNG_s
+//https://blog.csdn.net/weixin_44925547/article/details/106399517?spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-4-106399517-blog-104382277.235%5Ev43%5Epc_blog_bottom_relevance_base2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-4-106399517-blog-104382277.235%5Ev43%5Epc_blog_bottom_relevance_base2&utm_relevant_index=9
+
+bool canFinish(int numCourses, int** prerequisites, int prerequisitesSize, int* prerequisitesColSize) {
+    int precourse[100000] = {0}; // 記錄每個課程的先修數量
+    int queue[100000];          
+    int front = 0, rear = 0;    
+
+    if (!prerequisitesSize || !prerequisitesColSize) {
+        return 1;
+    }
+
+    // 計算每個課程的先修課程數量
+    for (int i = 0; i < prerequisitesSize; i++) {
+        precourse[prerequisites[i][0]]++;
+    }
+
+    // 將沒有先修課的加入到queue
+    for (int i = 0; i < numCourses; i++) {
+        if (precourse[i] == 0) {
+            queue[rear++] = i;
+        }
+    }
+
+    while (front < rear) {                                 //若queue還有課程，則繼續
+        int current = queue[front++];                      
+        for (int i = 0; i < prerequisitesSize; i++) {
+            if (prerequisites[i][1] == current) {          // 如果某課程的先修等於當前修課
+                precourse[prerequisites[i][0]]--;          // 將該課程的先修就減1
+                if (precourse[prerequisites[i][0]] == 0) { // 若該課程先修都修完了
+                    queue[rear++] = prerequisites[i][0];   // 則可以放進queue
+                }
+            }
+        }
+    }
+
+    //如果還有非0(還需要先修課)則為false
+    for(int j = 0 ; j < numCourses ; j++ ){
+        if(precourse[j] != 0){
+            return false;
+        }
+    }
+
+    return true;
+}
